@@ -131,8 +131,11 @@ logic [N_CORES-1:0][1:0] evt;
   assign tcdm.gnt     = &(tcdm_gnt_i);
   assign tcdm.r_valid = &(tcdm_r_valid_i);
   assign tcdm.r_data  = { >> {tcdm_r_data_i} };
-  assign tcdm.r_opc   = tcdm_r_opc_i;
   assign tcdm.r_user  = tcdm_r_user_i;
+  assign tcdm.r_ecc   = '0;
+  assign tcdm.r_id    = '0;
+  assign tcdm.egnt    = '1;
+  assign tcdm.r_evalid = '0;
 
   assign periph.req     = periph_req_i;
   assign periph.add     = periph_add_i;

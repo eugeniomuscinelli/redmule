@@ -8,7 +8,7 @@
 #ifndef __HAL_REDMULE_H__
 #define __HAL_REDMULE_H__
 
-#include "tensor_dim.h"
+#include "/home/emuscinelli/work2/redmule/golden-model/inc/tensor_dim.h"
 
 /* LOW-LEVEL HAL */
 #define REDMULE_ADDR_BASE REDMULE_BASE_ADD

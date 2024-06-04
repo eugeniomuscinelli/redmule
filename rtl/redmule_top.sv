@@ -42,7 +42,7 @@ module redmule_top
   hwpe_ctrl_intf_periph.slave periph,
 `endif
   // TCDM master ports for the memory side
-  hci_core_intf.master tcdm
+  hci_core_intf.initiator tcdm
 );
 
 localparam int unsigned DATAW_ALIGN = DATAW;

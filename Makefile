@@ -11,7 +11,7 @@ mkfile_path    := $(dir $(abspath $(firstword $(MAKEFILE_LIST))))
 SW             ?= $(mkfile_path)sw
 BUILD_DIR      ?= $(SW)/build
 VSIM_DIR       ?= $(mkfile_path)vsim
-QUESTA         ?= questa-2023.4
+QUESTA         ?= 
 BENDER_DIR     ?= .
 BENDER         ?= bender
 ISA            ?= riscv
@@ -98,7 +98,9 @@ ifeq ($(gui), 0)
 	-do "run -a"                \
 	-gSTIM_INSTR=$(STIM_INSTR)  \
 	-gSTIM_DATA=$(STIM_DATA)    \
-	-gPROB_STALL=$(P_STALL)
+	-gPROB_STALL=$(P_STALL)		\
+	-suppress vsim-3009         \
+	-suppress vsim-12003
 else
 	cd $(VSIM_DIR);            \
 	$(QUESTA) vsim $(tb)_opt   \
@@ -107,7 +109,9 @@ else
 	-do "source $(WAVES)"      \
 	-gSTIM_INSTR=$(STIM_INSTR) \
 	-gSTIM_DATA=$(STIM_DATA)   \
-	-gPROB_STALL=$(P_STALL)
+	-gPROB_STALL=$(P_STALL)	   \
+	-suppress vsim-3009        \
+	-suppress vsim-12003
 endif
 
 # Download bender

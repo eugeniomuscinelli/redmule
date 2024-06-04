@@ -79,7 +79,7 @@ module redmule_ctrl
 
   // Control slave interface
   hwpe_ctrl_slave  #(
-    .REGFILE_SCM    ( 0            ),
+    .REGFILE_SCM    ( RegfileScm   ),
     .N_CORES        ( N_CORES      ),
     .N_CONTEXT      ( N_CONTEXT    ),
     .N_IO_REGS      ( REDMULE_REGS ),
