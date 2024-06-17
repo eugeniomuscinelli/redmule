@@ -859,10 +859,10 @@ always_ff @(posedge clk_i or negedge rst_ni) begin : cast_registers
       output_cast_src_fmt_q <= redmule_pkg::FPFORMAT;
       output_cast_dst_fmt_q <= redmule_pkg::FPFORMAT;
     end else begin
-      input_cast_src_fmt_q  <= fpnew_pkg::fp_format_e'(reg_file_i.hwpe_params[OP_SELECTION][17:15]);
-      input_cast_dst_fmt_q  <= fpnew_pkg::fp_format_e'(reg_file_i.hwpe_params[OP_SELECTION][14:12]);
-      output_cast_src_fmt_q <= fpnew_pkg::fp_format_e'(reg_file_i.hwpe_params[OP_SELECTION][14:12]);
-      output_cast_dst_fmt_q <= fpnew_pkg::fp_format_e'(reg_file_i.hwpe_params[OP_SELECTION][17:15]);
+      input_cast_src_fmt_q  <= fpnew_pkg::fp_format_e'(reg_file_i.hwpe_params[OP_SELECTION][15:13]);
+      input_cast_dst_fmt_q  <= fpnew_pkg::fp_format_e'(reg_file_i.hwpe_params[OP_SELECTION][12:10]);
+      output_cast_src_fmt_q <= fpnew_pkg::fp_format_e'(reg_file_i.hwpe_params[OP_SELECTION][12:10]);
+      output_cast_dst_fmt_q <= fpnew_pkg::fp_format_e'(reg_file_i.hwpe_params[OP_SELECTION][15:13]);
     end
   end
 end

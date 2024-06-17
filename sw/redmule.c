@@ -10,11 +10,11 @@
 #include "archi_redmule.h"
 #include "hal_redmule.h"
 
-#include "/home/emuscinelli/work2/redmule/golden-model/inc/x_input.h"
-#include "/home/emuscinelli/work2/redmule/golden-model/inc/w_input.h"
-#include "/home/emuscinelli/work2/redmule/golden-model/inc/y_input.h"
-#include "/home/emuscinelli/work2/redmule/golden-model/inc/z_output.h"
-#include "/home/emuscinelli/work2/redmule/golden-model/inc/golden.h"
+#include "x_input.h"
+#include "w_input.h"
+#include "y_input.h"
+#include "z_output.h"
+#include "golden.h"
 
 int main() {
 
