@@ -5,6 +5,8 @@
 // Yvan Tortorella <yvan.tortorella@unibo.it>
 //
 
+`include "hci_helpers.svh"
+
 module redmule_streamer
   import fpnew_pkg::*;
   import redmule_pkg::*;
@@ -37,6 +39,17 @@ module redmule_streamer
   output flgs_streamer_t         flags_o
 );
 
+// this localparam is reused for all internal HCI interfaces
+localparam hci_size_parameter_t `HCI_SIZE_PARAM(ldst_tcdm) = '{
+  DW:  DW,
+  AW:  DEFAULT_AW,
+  BW:  DEFAULT_BW,
+  UW:  UW,
+  IW:  DEFAULT_IW,
+  EW:  DEFAULT_EW,
+  EHW: DEFAULT_EHW
+};
+
 // Here the dynamic mux for virtual_tcdm interfaces
 // coming/going from/to the accelerator to/from the memory
 hci_core_intf #(
@@ -65,7 +78,8 @@ hci_core_intf #(
 ) virt_tcdm [0:1] ( .clk ( clk_i ) );
 
 hci_core_mux_dynamic #(
-  .NB_IN_CHAN         ( 2         )
+  .NB_IN_CHAN         ( 2         ),
+  .`HCI_SIZE_PARAM(in) ( `HCI_SIZE_PARAM(ldst_tcdm))
 ) i_ldst_mux          (
   .clk_i              ( clk_i     ),
   .rst_ni             ( rst_ni    ),
@@ -85,7 +99,8 @@ hci_core_mux_dynamic #(
 hci_core_intf #( .DW ( DW ),
                  .UW ( UW ) ) zstream2cast ( .clk ( clk_i ) );
 hci_core_sink         #(
-  .MISALIGNED_ACCESSES ( REALIGN                     )
+  .MISALIGNED_ACCESSES ( REALIGN                     ),
+  .`HCI_SIZE_PARAM(tcdm) ( `HCI_SIZE_PARAM(ldst_tcdm))
 ) i_stream_sink        (
   .clk_i               ( clk_i                       ),
   .rst_ni              ( rst_ni                      ),
@@ -154,7 +169,8 @@ assign zstream2cast.r_ecc    = z_fifo_d.r_ecc;
 
 // HCI store fifo.
 hci_core_fifo #(
-  .FIFO_DEPTH  ( 2  )
+  .FIFO_DEPTH  ( 2  ),
+  .`HCI_SIZE_PARAM(tcdm_initiator) ( `HCI_SIZE_PARAM(ldst_tcdm) )
 ) i_store_fifo (
   .clk_i          ( clk_i    ),
   .rst_ni         ( rst_ni   ),
@@ -195,7 +211,8 @@ hci_core_intf #( .DW ( DW ),
 // Dynamic multiplexer splitting the TCDM-side interface into
 // X, W, and Y interfaces
 hci_core_mux_dynamic #(
-  .NB_IN_CHAN         ( NumStreamSources )
+  .NB_IN_CHAN         ( NumStreamSources ),
+  .`HCI_SIZE_PARAM(in) ( `HCI_SIZE_PARAM(ldst_tcdm) )
 ) i_source_mux        (
   .clk_i              ( clk_i            ),
   .rst_ni             ( rst_ni           ),
@@ -236,8 +253,9 @@ for (genvar i = 0; i < NumStreamSources; i++) begin: gen_tcdm2stream
   hci_core_assign i_load_assign ( .tcdm_target (load_fifo_d[i]), .tcdm_initiator (source[i]) );
 
   hci_core_fifo #(
-    .FIFO_DEPTH  ( 4  ) // to avoid protocol violations, as the consumer has a throughput 
+    .FIFO_DEPTH  ( 4  ), // to avoid protocol violations, as the consumer has a throughput 
                         // of 1 packet over 4 cycles, we need a depth of 4 elements.
+    .`HCI_SIZE_PARAM(tcdm_initiator) ( `HCI_SIZE_PARAM(ldst_tcdm) )
   ) i_load_tcdm_fifo (
     .clk_i          ( clk_i          ),
     .rst_ni         ( rst_ni         ),
